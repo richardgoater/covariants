@@ -11,6 +11,14 @@ const ClusterGroupContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   padding: 0;
+
+  @media (min-width: 992px) {
+    @supports (display: grid) {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 5px;
+    }
+  }
 `
 
 const ShowMoreButton = styled(Button)`
@@ -43,7 +51,7 @@ export interface ClusterButtonGroupProps {
 }
 
 export function ClusterButtonGroup({ clusterGroup, currentCluster }: ClusterButtonGroupProps) {
-  const [showNonImportant, setShowNonImportant] = useState(false)
+  const [showNonImportant, setShowNonImportant] = useState(true)
   const toggleShowNonImportant = useMemo(() => (_: unknown) => setShowNonImportant(!showNonImportant), [showNonImportant]) // prettier-ignore
 
   return (
@@ -65,9 +73,9 @@ export function ClusterButtonGroup({ clusterGroup, currentCluster }: ClusterButt
 
       <Row noGutters>
         <Col className="d-flex">
-          <ShowMoreButton type="button" color="link" onClick={toggleShowNonImportant}>
+          {/* <ShowMoreButton type="button" color="link" onClick={toggleShowNonImportant}>
             {showNonImportant ? 'Show less' : 'Show more'}
-          </ShowMoreButton>
+          </ShowMoreButton> */}
         </Col>
       </Row>
     </Container>

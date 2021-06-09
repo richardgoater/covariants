@@ -11,9 +11,9 @@ const ClusterButtonRow = styled.span`
 
   @media (min-width: 992px) {
     flex: 1 0 150px;
-    flex-grow: 1;
-    height: 50px;
-    margin: 3px auto;
+    flex-grow: 0;
+    height: 40px;
+    margin: 5px 0;
   }
 
   @media (max-width: 991.98px) {
@@ -45,6 +45,7 @@ const ClusterButtonComponent = styled(Link)<{ $isCurrent: boolean; $color: strin
   @media (min-width: 992px) {
     justify-content: left;
     margin: 0 5px;
+    width: 33.333%;
   }
 
   @media (max-width: 991.98px) {
@@ -80,7 +81,7 @@ const ClusterTitle = styled.h1<{ $isCurrent: boolean }>`
   }
 
   font-weight: ${(props) => props.$isCurrent && 600};
-  font-size: ${(props) => (props.$isCurrent ? '1.5rem' : '1.33rem')};
+  font-size: ${(props) => (props.$isCurrent ? '1.5rem' : '1rem')};
   margin: auto 5px;
 
   color: ${({ $isCurrent, theme }) => ($isCurrent ? theme.gray700 : theme.gray600)};
