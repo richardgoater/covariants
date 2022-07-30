@@ -40,11 +40,18 @@ const chartConfig: EChartsOption = {
   animation: false,
   tooltip: {
     trigger: 'axis',
-    axisPointer: { type: 'line' },
+    axisPointer: {
+      type: 'line',
+      lineStyle: {
+        color: theme.gray700,
+        type: 'solid',
+      },
+      // zlevel: 10_001,
+    },
     formatter: (data) => renderCountryDistributionPlotTooltip(data as unknown as PlotTooltipDatum[]),
   },
   grid: {
-    top: '5px',
+    top: '10px',
     left: '20px',
     right: '10px',
     bottom: '10px',
@@ -143,16 +150,14 @@ function AreaPlot({ width, cluster_names: clusterNames, distribution }: AreaPlot
           const frequency = count / total_sequences
           return [timestamp, frequency, count]
         })
-
+        const color = getClusterColor(clusterName)
         return [
           clusterName,
           {
             ...seriesConfig,
             name: clusterName,
-            areaStyle: {
-              ...seriesConfig.areaStyle,
-              color: getClusterColor(clusterName),
-            },
+            areaStyle: { ...seriesConfig.areaStyle, color },
+            itemStyle: { ...seriesConfig.itemStyle, color },
             data,
           },
         ]
@@ -169,14 +174,12 @@ function AreaPlot({ width, cluster_names: clusterNames, distribution }: AreaPlot
       const frequency: number = count / total_sequences
       return [timestamp, frequency, count]
     })
-
+    const color = getClusterColor(CLUSTER_NAME_OTHERS)
     series.push({
       ...seriesConfig,
       name: CLUSTER_NAME_OTHERS,
-      areaStyle: {
-        ...seriesConfig.areaStyle,
-        color: getClusterColor(CLUSTER_NAME_OTHERS),
-      },
+      areaStyle: { ...seriesConfig.areaStyle, color },
+      itemStyle: { ...seriesConfig.itemStyle, color },
       data,
     })
 

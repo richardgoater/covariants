@@ -108,7 +108,7 @@ export function CountryDistributionPlotTooltip({ data }: { data: PlotTooltipDatu
               </span>
             </td>
             <td className="px-2 text-right">{total}</td>
-            <td className="px-2 text-right">{'1.00'}</td>
+            <td className="px-2 text-right">{'100.0%'}</td>
           </tr>
         </TooltipTableBody>
       </TooltipTable>
