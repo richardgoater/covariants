@@ -25,6 +25,7 @@ import { useResizeDetector } from 'react-resize-detector'
 import { ChartContainerInner, ChartContainerOuter } from 'src/components/Common/PlotLayout'
 import { CLUSTER_NAME_OTHERS, getClusterColor } from 'src/io/getClusters'
 import { theme } from 'src/theme'
+import { useInView } from 'react-intersection-observer'
 
 echarts.use([
   AxisPointerComponent,
@@ -133,13 +134,14 @@ const seriesConfig: LineSeriesOption = {
 
 export interface AreaPlotProps {
   width: number
+  height: number
   cluster_names: string[]
   distribution: CountryDistributionDatum[]
 }
 
-function AreaPlot({ width, cluster_names: clusterNames, distribution }: AreaPlotProps) {
+function AreaPlot({ width, height, cluster_names: clusterNames, distribution }: AreaPlotProps) {
   const onChartReady = useCallback(() => {}, [])
-  const opts: Opts = useMemo(() => ({ width, renderer: 'canvas' }), [width])
+  const opts: Opts = useMemo(() => ({ width, height, renderer: 'canvas' }), [width, height])
 
   const { xMin, series } = useMemo(() => {
     const seriesMap = Object.fromEntries(
@@ -196,8 +198,21 @@ function AreaPlot({ width, cluster_names: clusterNames, distribution }: AreaPlot
     }
   }, [series, xMin])
 
+  const [ref, inView] = useInView()
+
   return (
-    <ReactEChartsCore echarts={echarts} option={option} onChartReady={onChartReady} opts={opts} notMerge lazyUpdate />
+    <div ref={ref} style={{ width, height }}>
+      {inView && (
+        <ReactEChartsCore
+          echarts={echarts}
+          option={option}
+          onChartReady={onChartReady}
+          opts={opts}
+          notMerge
+          lazyUpdate
+        />
+      )}
+    </div>
   )
 }
 
@@ -220,7 +235,12 @@ export function CountryDistributionPlot({ cluster_names, distribution }: Country
   return (
     <ChartContainerOuter ref={ref}>
       <ChartContainerInner>
-        <AreaPlot width={width} cluster_names={cluster_names} distribution={sortBy(distribution, 'week')} />
+        <AreaPlot
+          width={width}
+          height={width / theme.plot.aspectRatio}
+          cluster_names={cluster_names}
+          distribution={sortBy(distribution, 'week')}
+        />
       </ChartContainerInner>
     </ChartContainerOuter>
   )
